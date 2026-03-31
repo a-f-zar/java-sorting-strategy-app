@@ -2,14 +2,30 @@ package com.aston.models;
 import java.util.Objects;
 
 public class Student {
-    private String name;
-    private Double averageGrade;
-    private Integer studentCardNumber;
+    private final String name;
+    private final Double averageGrade;
+    private final Integer studentCardNumber;
+
+    public String getName() {
+        return name;
+    }
+
+    public Double getAverageGrade() {
+        return averageGrade;
+    }
+
+    public Integer getStudentCardNumber() {
+        return studentCardNumber;
+    }
 
     private Student(Builder builder) {
         this.name = builder.name;
         this.averageGrade = builder.averageGrade;
         this.studentCardNumber = builder.studentCardNumber;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {
