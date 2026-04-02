@@ -12,10 +12,14 @@ public class BubbleSortStrategy<T> implements SortingStrategy<T> {
         List<T> list = new ArrayList<>(inputList);
 
         int n = list.size();
+        T tmp;
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
                 if (comparator.compare(list.get(j), list.get(j + 1)) > 0) {
-                    Collections.swap(list, j, j + 1);
+                    tmp = list.get(j);
+                    list.set(j, list.get(j + 1));
+                    list.set(j + 1, tmp);
+
                 }
             }
         }
