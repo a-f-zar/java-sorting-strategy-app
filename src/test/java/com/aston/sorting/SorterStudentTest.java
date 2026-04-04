@@ -60,7 +60,7 @@ public class SorterStudentTest {
     }
 
     @Test
-    @DisplayName("StudentComparator: BubbleSort student by grade reversed")
+    @DisplayName("StudentComparator: BubbleSort student by card")
     void StudentComparatorTestCard() {
         sorter.setStrategy(new BubbleSortStrategy<>());
         List<Student> students = List.of(
