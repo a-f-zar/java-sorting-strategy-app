@@ -1,7 +1,7 @@
 package com.aston.input;
 
 import com.aston.exception.ValidationException;
-import com.aston.model.Student;
+import com.aston.models.Student;
 import com.aston.validation.StudentValidator;
 
 public class StudentInputParser {
