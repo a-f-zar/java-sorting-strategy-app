@@ -1,6 +1,6 @@
 package com.aston.sorting;
-import com.aston.context.Sorter;
-import com.aston.context.strategy.BubbleSortStrategy;
+import com.aston.sorting.context.Sorter;
+import com.aston.sorting.context.strategy.BubbleSortStrategy;
 import com.aston.input.StudentInputParser;
 import com.aston.models.Student;
 import com.aston.models.comparator.StudentComparator;

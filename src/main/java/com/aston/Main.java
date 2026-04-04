@@ -1,7 +1,14 @@
 package com.aston;
 
+import com.aston.input.context.InputStudent;
+import com.aston.models.Student;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        InputStudent service = new InputStudent();
+        List<Student> students = service.input(System.in);
+        students.forEach(System.out::println);
     }
 }
