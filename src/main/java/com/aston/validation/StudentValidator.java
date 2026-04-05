@@ -9,6 +9,7 @@ public class StudentValidator {
     private static final double MIN_AVERAGE_GRADE = 0.0;
     private static final double MAX_AVERAGE_GRADE = 5.0;
     private static final int MIN_STUDENT_CARD_NUMBER = 1;
+    private static final String NAME_LETTERS_ONLY_MESSAGE = "Name must contain only letters";
 
     public void validateName(String name) {
         if (name == null || name.isBlank()) {
@@ -19,6 +20,10 @@ public class StudentValidator {
             throw new ValidationException(
                     "Name must be between " + MIN_NAME_LENGTH + " and " + MAX_NAME_LENGTH + " characters"
             );
+        }
+
+        if (!name.chars().allMatch(Character::isLetter)) {
+            throw new ValidationException(NAME_LETTERS_ONLY_MESSAGE);
         }
     }
 

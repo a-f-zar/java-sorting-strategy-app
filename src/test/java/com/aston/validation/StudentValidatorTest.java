@@ -41,6 +41,28 @@ class StudentValidatorTest {
     }
 
     @Test
+    @DisplayName("Валидация имени выбрасывает исключение, если имя содержит цифры")
+    void validateNameShouldThrowExceptionWhenNameContainsDigits() {
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> validator.validateName("Alex123")
+        );
+
+        assertEquals("Name must contain only letters", exception.getMessage());
+    }
+
+    @Test
+    @DisplayName("Валидация имени выбрасывает исключение, если имя содержит спецсимволы")
+    void validateNameShouldThrowExceptionWhenNameContainsSpecialCharacters() {
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> validator.validateName("Alex-")
+        );
+
+        assertEquals("Name must contain only letters", exception.getMessage());
+    }
+
+    @Test
     @DisplayName("Средний балл проходит валидацию, если находится в диапазоне от 0 до 5")
     void validateAverageGradeShouldAcceptValueFromZeroToFive() {
         assertDoesNotThrow(() -> validator.validateAverageGrade(4.5));
