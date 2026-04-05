@@ -62,4 +62,15 @@ class StudentInputParserTest {
 
         assertEquals("Name must be between 3 and 100 characters", exception.getMessage());
     }
+
+    @Test
+    @DisplayName("Парсер выбрасывает исключение, если имя содержит не только буквы")
+    void parseInputShouldThrowExceptionWhenNameContainsNotOnlyLetters() {
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> parser.parseInput("Alex-1", "4.5", "12345")
+        );
+
+        assertEquals("Name must contain only letters", exception.getMessage());
+    }
 }
