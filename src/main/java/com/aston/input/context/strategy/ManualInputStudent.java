@@ -13,24 +13,24 @@ import java.util.Scanner;
 
 public class ManualInputStudent implements InputStudentStrategy {
     private static final StudentValidator validator = new StudentValidator();
-    private static final StudentInputParser parser = new StudentInputParser();
 
     @Override
     public List<Student> input(InputStream in) {
         Scanner scanner = new Scanner(in);
         List<Student> students = new ArrayList<>();
-        System.out.println("Введите студентов. Для окончания введите пустую строку для имени.");
+        System.out.print("Введите количество студентов: ");
+        int count = scanner.nextInt();
+        scanner.nextLine();
         String name;
         Double averageGrade;
         Integer studentCardNumber;
+        int i = 0;
 
-        while (true) {
-
+        while (i < count) {
 
             while (true) {
                 System.out.print("Name student: ");
                 name = scanner.nextLine();
-                if (name.isBlank()) break;
                 try {
                     validator.validateName(name);
                 } catch (ValidationException e) {
@@ -39,8 +39,6 @@ public class ManualInputStudent implements InputStudentStrategy {
                 }
                 break;
             }
-
-            if (name.isBlank()) break;
 
             while (true) {
                 System.out.print("Averаge grade student: ");
@@ -53,7 +51,7 @@ public class ManualInputStudent implements InputStudentStrategy {
                     scanner.nextLine();
                     continue;
                 } catch (InputMismatchException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(e.toString() + " Try again");
                     scanner.nextLine();
                     continue;
                 }
@@ -71,7 +69,7 @@ public class ManualInputStudent implements InputStudentStrategy {
                     scanner.nextLine();
                     continue;
                 } catch (InputMismatchException e) {
-                    System.out.println(e.getMessage());
+                    System.out.println(e.toString() + " Try again");
                     scanner.nextLine();
                     continue;
                 }
@@ -85,6 +83,8 @@ public class ManualInputStudent implements InputStudentStrategy {
                     .studentCardNumber(studentCardNumber)
                     .build()
             );
+
+            i++;
 
         }
         return students;
