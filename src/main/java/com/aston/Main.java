@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
         InputStudent service = new InputStudent();
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Введите количкство студентов: ");
+        System.out.print("Введите количество студентов: ");
         int count = scanner.nextInt();
         scanner.nextLine();
         List<Student> students = service.input(System.in, count);
