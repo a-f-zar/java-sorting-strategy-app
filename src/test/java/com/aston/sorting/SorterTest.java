@@ -1,7 +1,7 @@
 package com.aston.sorting;
 
-import com.aston.context.Sorter;
-import com.aston.context.strategy.BubbleSortStrategy;
+import com.aston.sorting.context.Sorter;
+import com.aston.sorting.context.strategy.BubbleSortStrategy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

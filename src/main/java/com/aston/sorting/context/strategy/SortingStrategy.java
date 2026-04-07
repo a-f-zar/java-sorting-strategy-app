@@ -1,4 +1,4 @@
-package com.aston.context.strategy;
+package com.aston.sorting.context.strategy;
 
 import java.util.Comparator;
 import java.util.List;
