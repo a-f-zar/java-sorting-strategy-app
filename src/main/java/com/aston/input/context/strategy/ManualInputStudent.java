@@ -15,12 +15,9 @@ public class ManualInputStudent implements InputStudentStrategy {
     private static final StudentValidator validator = new StudentValidator();
 
     @Override
-    public List<Student> input(InputStream in) {
+    public List<Student> input(InputStream in, int count) {
         Scanner scanner = new Scanner(in);
         List<Student> students = new ArrayList<>();
-        System.out.print("Введите количество студентов: ");
-        int count = scanner.nextInt();
-        scanner.nextLine();
         String name;
         Double averageGrade;
         Integer studentCardNumber;

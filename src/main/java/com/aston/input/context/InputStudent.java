@@ -3,7 +3,7 @@ package com.aston.input.context;
 import com.aston.input.context.strategy.InputStudentStrategy;
 import com.aston.input.context.strategy.ManualInputStudent;
 import com.aston.models.Student;
-import com.aston.sorting.context.strategy.SortingStrategy;
+
 
 import java.io.File;
 import java.io.InputStream;
@@ -17,16 +17,16 @@ public class InputStudent {
         this.fileStrategy = strategy;
     }
 
-    public List<Student> input(InputStream in) {
+    public List<Student> input(InputStream in, int count) {
         if (in == System.in){
-            return new ManualInputStudent().input(in);
+            return new ManualInputStudent().input(in, count);
         } else {
-            return fileStrategy.input(in);
+            return fileStrategy.input(in, count);
         }
     }
 
     // Заглушка для файлового ввода, все стратегии на ввод из файла пишите сюда
-    public List<Student> input(File file){
+    public List<Student> input(File file, int count){
         return null;
     }
 }
