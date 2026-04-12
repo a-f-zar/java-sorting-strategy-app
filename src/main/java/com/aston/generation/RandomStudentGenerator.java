@@ -51,8 +51,11 @@ public class RandomStudentGenerator {
     }
 
     private double randomGrade() {
-        double grade = ThreadLocalRandom.current().nextDouble(MIN_GRADE, MAX_GRADE + 0.01);
-        return Math.round(grade * 100.0) / 100.0;
+        int min = (int) (MIN_GRADE * 100);
+        int max = (int) (MAX_GRADE * 100);
+
+        int value = ThreadLocalRandom.current().nextInt(min, max + 1);
+        return value / 100.0;
     }
 
     private int randomCardNumber() {

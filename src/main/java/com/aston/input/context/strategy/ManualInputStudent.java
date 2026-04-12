@@ -6,7 +6,6 @@ import com.aston.validation.StudentValidator;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,85 +15,71 @@ public class ManualInputStudent implements InputStudentStrategy {
     @Override
     public List<Student> input(InputStream in, int count) {
         Scanner scanner = new Scanner(in);
+        return input(scanner, count);
+    }
+
+    @Override
+    public List<Student> input(Scanner scanner, int count) {
         List<Student> students = new ArrayList<>();
-        int i = 0;
 
-        while (i < count) {
-
+        for (int i = 0; i < count; i++) {
             students.add(
                     Student.builder()
-                    .name(studentNameIn(scanner))
-                    .averageGrade(studentGradeIn(scanner))
-                    .studentCardNumber(studentCardIn(scanner))
-                    .build()
+                            .name(studentNameIn(scanner))
+                            .averageGrade(studentGradeIn(scanner))
+                            .studentCardNumber(studentCardIn(scanner))
+                            .build()
             );
-
-            i++;
-
         }
+
         return students;
     }
 
     private static String studentNameIn(Scanner scanner) {
-        String name;
         while (true) {
             System.out.print("Name student: ");
-            name = scanner.nextLine();
+            String name = scanner.nextLine();
+
             try {
                 validator.validateName(name);
+                return name;
             } catch (ValidationException e) {
                 System.out.println(e.getMessage() + " Try again");
-                continue;
             }
-            break;
         }
-        return name;
     }
 
     private static Double studentGradeIn(Scanner scanner) {
-        Double averageGrade;
-
         while (true) {
-            System.out.print("Averаge grade student: ");
+            System.out.print("Average grade student: ");
+            String input = scanner.nextLine().trim().replace(',', '.');
+
             try {
-                averageGrade = scanner.nextDouble();
-                scanner.nextLine();
+                Double averageGrade = Double.parseDouble(input);
                 validator.validateAverageGrade(averageGrade);
+                return averageGrade;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid average grade. Try again");
             } catch (ValidationException e) {
                 System.out.println(e.getMessage() + " Try again");
-                scanner.nextLine();
-                continue;
-            } catch (InputMismatchException e) {
-                System.out.println(e.toString() + " Try again");
-                scanner.nextLine();
-                continue;
             }
-            break;
         }
-        return averageGrade;
     }
 
     private static Integer studentCardIn(Scanner scanner) {
-        Integer studentCardNumber;
-
         while (true) {
             System.out.print("Student card number: ");
+            String input = scanner.nextLine().trim();
+
             try {
-                studentCardNumber = scanner.nextInt();
-                scanner.nextLine();
+                Integer studentCardNumber = Integer.parseInt(input);
                 validator.validateStudentCardNumber(studentCardNumber);
+                return studentCardNumber;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid student card number. Try again");
             } catch (ValidationException e) {
                 System.out.println(e.getMessage() + " Try again");
-                scanner.nextLine();
-                continue;
-            } catch (InputMismatchException e) {
-                System.out.println(e.toString() + " Try again");
-                scanner.nextLine();
-                continue;
             }
-            break;
         }
-        return studentCardNumber;
     }
-
 }
