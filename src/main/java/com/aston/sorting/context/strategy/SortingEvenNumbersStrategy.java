@@ -5,20 +5,23 @@ import com.aston.sorting.context.Sorter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
-public class SortingEvenNumbersStrategy implements SortingStrategy<Integer> {
-    private SortingStrategy<Integer> sorter;
+public class SortingEvenNumbersStrategy<T> implements SortingStrategy<T> {
+    private final SortingStrategy<T> sorter;
+    private final Function<T, Integer> numberExtractor;
 
-    public SortingEvenNumbersStrategy(SortingStrategy<Integer> sorter) {
+    public SortingEvenNumbersStrategy(SortingStrategy<T> sorter, Function<T, Integer> numberExtractor) {
         this.sorter = sorter;
+        this.numberExtractor = numberExtractor;
     }
 
     @Override
-    public List<Integer> sort(List<Integer> inputList, Comparator<Integer> comparator) {
-        List<Integer> list = new ArrayList<>(inputList);
+    public List<T> sort(List<T> inputList, Comparator<T> comparator) {
+        List<T> list = new ArrayList<>(inputList);
 
-        List<Integer> posEven = list.stream()
-                .filter(i -> i % 2 == 0)
+        List<T> posEven = list.stream()
+                .filter(i -> numberExtractor.apply(i) % 2 == 0)
                 .toList();
 
         posEven = sorter.sort(posEven, comparator);
@@ -26,12 +29,11 @@ public class SortingEvenNumbersStrategy implements SortingStrategy<Integer> {
         int evenIndex = 0;
 
         for(int i = 0; i < list.size(); i++) {
-            if(list.get(i) % 2 == 0) {
+            if(numberExtractor.apply(list.get(i)) % 2 == 0) {
                 list.set(i, posEven.get(evenIndex));
                 evenIndex++;
             }
         }
-
         return list;
     }
 }
