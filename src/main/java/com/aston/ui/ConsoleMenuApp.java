@@ -8,8 +8,10 @@ import com.aston.input.context.strategy.ManualInputStudent;
 import com.aston.input.context.strategy.RandomInputStudent;
 import com.aston.models.Student;
 import com.aston.models.comparator.StudentComparator;
+import com.aston.output.StudentFileWriter;
 import com.aston.sorting.context.Sorter;
 import com.aston.sorting.context.strategy.BubbleSortStrategy;
+import com.aston.sorting.context.strategy.InsertionSortStrategy;
 import com.aston.sorting.context.strategy.SortingEvenNumbersStrategy;
 import com.aston.sorting.context.strategy.SortingStrategy;
 
@@ -31,11 +33,13 @@ public class ConsoleMenuApp {
     private static final int SORT_FIELD_MAX = 3;
     private static final int SORT_TYPE_MIN = 1;
     private static final int SORT_TYPE_MAX = 3;
+    private static final String DEFAULT_OUTPUT_FILE = "results.txt";
 
     private final Scanner scanner = new Scanner(System.in);
     private final InputStudent inputStudent = new InputStudent();
     private final StudentInputParser studentInputParser = new StudentInputParser();
     private final StudentOccurrenceCounter studentOccurrenceCounter = new StudentOccurrenceCounter();
+    private final StudentFileWriter studentFileWriter = new StudentFileWriter();
 
     private enum SortType {
         BUBBLE,
@@ -116,8 +120,8 @@ public class ConsoleMenuApp {
         System.out.println();
         System.out.println("Sorted collection:");
         printStudents(sortedStudents);
-        handleOccurrencesCount(sortedStudents);
-        handleSaveResult();
+        OccurrenceResult occurrenceResult = handleOccurrencesCount(sortedStudents);
+        handleSaveResult(sortedStudents, occurrenceResult);
         System.out.println();
     }
 
@@ -130,7 +134,7 @@ public class ConsoleMenuApp {
     private SortingStrategy<Student> buildSortingStrategy(SortType sortType, StudentComparator.By sortField) {
         SortingStrategy<Student> baseStrategy = switch (sortType) {
             case BUBBLE -> new BubbleSortStrategy<>();
-            case INSERTION -> throw new IllegalStateException("Insertion sort is not implemented yet");
+            case INSERTION -> new InsertionSortStrategy<>();
             case SELECTION -> throw new IllegalStateException("Selection sort is not implemented yet");
         };
 
@@ -158,8 +162,7 @@ public class ConsoleMenuApp {
                 case 1:
                     return SortType.BUBBLE;
                 case 2:
-                    System.out.println("Insertion sort is not implemented yet. Choose another sort type.");
-                    break;
+                    return SortType.INSERTION;
                 case 3:
                     System.out.println("Selection sort is not implemented yet. Choose another sort type.");
                     break;
@@ -242,19 +245,20 @@ public class ConsoleMenuApp {
         System.out.println("0. Exit");
     }
 
-    private void handleOccurrencesCount(List<Student> students) {
+    private OccurrenceResult handleOccurrencesCount(List<Student> students) {
         System.out.println();
         System.out.println("Do you want to count occurrences of a student?");
         System.out.println("1. Yes");
         System.out.println("2. No");
 
         if (readMenuChoice(YES_NO_MIN, YES_NO_MAX) != 1) {
-            return;
+            return null;
         }
 
         Student targetStudent = readStudentForCount();
         int occurrences = studentOccurrenceCounter.countOccurrences(students, targetStudent);
         System.out.println("Occurrences found: " + occurrences);
+        return new OccurrenceResult(targetStudent, occurrences);
     }
 
     private Student readStudentForCount() {
@@ -275,14 +279,42 @@ public class ConsoleMenuApp {
         }
     }
 
-    private void handleSaveResult() {
+    private void handleSaveResult(List<Student> sortedStudents, OccurrenceResult occurrenceResult) {
         System.out.println();
         System.out.println("Do you want to save the result to file?");
         System.out.println("1. Yes");
         System.out.println("2. No");
 
         if (readMenuChoice(YES_NO_MIN, YES_NO_MAX) == 1) {
-            System.out.println("Saving to file is not implemented yet.");
+            saveResultToFile(sortedStudents, occurrenceResult);
+        }
+    }
+
+    private void saveResultToFile(List<Student> sortedStudents, OccurrenceResult occurrenceResult) {
+        while (true) {
+            System.out.print("Enter output file path or press Enter for " + DEFAULT_OUTPUT_FILE + ": ");
+            String pathText = scanner.nextLine().trim();
+
+            try {
+                Path path = pathText.isBlank() ? Path.of(DEFAULT_OUTPUT_FILE) : Path.of(pathText);
+                studentFileWriter.writeSortedStudents(sortedStudents, path);
+
+                if (occurrenceResult != null) {
+                    studentFileWriter.writeOccurrenceResult(
+                            occurrenceResult.student(),
+                            occurrenceResult.count(),
+                            path
+                    );
+                }
+
+                System.out.println("Result saved to file: " + path.toAbsolutePath());
+                return;
+            } catch (InvalidPathException e) {
+                System.out.println("Invalid file path. Try again.");
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Try again.");
+            }
         }
     }
 
@@ -296,5 +328,8 @@ public class ConsoleMenuApp {
         for (int i = 0; i < students.size(); i++) {
             System.out.println((i + 1) + ". " + students.get(i));
         }
+    }
+
+    private record OccurrenceResult(Student student, int count) {
     }
 }
