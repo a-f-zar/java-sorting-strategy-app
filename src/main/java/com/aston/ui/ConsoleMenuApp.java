@@ -12,6 +12,7 @@ import com.aston.output.StudentFileWriter;
 import com.aston.sorting.context.Sorter;
 import com.aston.sorting.context.strategy.BubbleSortStrategy;
 import com.aston.sorting.context.strategy.InsertionSortStrategy;
+import com.aston.sorting.context.strategy.SelectionSortStrategy;
 import com.aston.sorting.context.strategy.SortingEvenNumbersStrategy;
 import com.aston.sorting.context.strategy.SortingStrategy;
 
@@ -135,7 +136,7 @@ public class ConsoleMenuApp {
         SortingStrategy<Student> baseStrategy = switch (sortType) {
             case BUBBLE -> new BubbleSortStrategy<>();
             case INSERTION -> new InsertionSortStrategy<>();
-            case SELECTION -> throw new IllegalStateException("Selection sort is not implemented yet");
+            case SELECTION -> new SelectionSortStrategy<>();
         };
 
         if (sortField == StudentComparator.By.STUDENT_CARD_NUMBER && readNeedEvenOnlySort()) {
@@ -164,8 +165,7 @@ public class ConsoleMenuApp {
                 case 2:
                     return SortType.INSERTION;
                 case 3:
-                    System.out.println("Selection sort is not implemented yet. Choose another sort type.");
-                    break;
+                    return SortType.SELECTION;
                 default:
                     throw new IllegalStateException("Unexpected sort type");
             }
