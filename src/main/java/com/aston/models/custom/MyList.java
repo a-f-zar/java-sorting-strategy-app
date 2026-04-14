@@ -4,7 +4,6 @@ import java.util.stream.Stream;
 
 public interface MyList<E> extends Iterable<E> {
     void add(E element);
-    void addAll(MyList<E> otherList);
     void remove(E element);
     int size();
     E get(int index);

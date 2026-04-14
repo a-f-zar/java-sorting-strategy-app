@@ -46,13 +46,6 @@ public class CustomArrayList<E> implements MyList<E> {
     }
 
     @Override
-    public void addAll(MyList<E> otherList) {
-        for (E e : otherList) {
-            add(e);
-        }
-    }
-
-    @Override
     public void remove(E element) {
         for (int i = 0; i < size; i++) {
             if(elements[i].equals(element)) {
@@ -156,45 +149,6 @@ public class CustomArrayList<E> implements MyList<E> {
             System.arraycopy(elements, 0, newElements, 0, size);
             elements = newElements;
         }
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 1;
-        for (int i = 0; i < size; i++) {
-            result = 31 * result + Objects.hashCode(elements[i]);
-        }
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-
-        CustomArrayList<?> other = (CustomArrayList<?>) obj;
-        if (this.size != other.size) return false;
-
-        for (int i = 0; i < size; i++) {
-            if (!Objects.equals(this.elements[i], other.elements[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("[");
-        for (int i = 0; i < size; i++) {
-            sb.append(elements[i]);
-            if (i < size - 1) {
-                sb.append(", ");
-            }
-        }
-        sb.append("]");
-        return sb.toString();
     }
 }
 
