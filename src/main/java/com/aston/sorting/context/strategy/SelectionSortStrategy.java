@@ -1,15 +1,16 @@
 package com.aston.sorting.context.strategy;
 
-import java.util.ArrayList;
+import com.aston.models.custom.CustomArrayList;
+import com.aston.models.custom.MyList;
+
 import java.util.Comparator;
-import java.util.List;
 
 public class SelectionSortStrategy<T> implements SortingStrategy<T> {
 
     @Override
-    public List<T> sort(List<T> list, Comparator<T> comparator) {
+    public MyList<T> sort(MyList<T> list, Comparator<T> comparator) {
 
-        List<T> sortedList = new ArrayList<>(list);
+        MyList<T> sortedList = new CustomArrayList<>(list);
 
         for (int i = 0; i < sortedList.size() - 1; i++) {
             int minIndex = i;

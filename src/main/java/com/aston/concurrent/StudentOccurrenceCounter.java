@@ -1,8 +1,8 @@
 package com.aston.concurrent;
 
 import com.aston.models.Student;
+import com.aston.models.custom.MyList;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -12,7 +12,7 @@ public class StudentOccurrenceCounter {
 
     private static final long AWAIT_TIMEOUT_SECONDS = 5L;
 
-    public int countOccurrences(List<Student> students, Student target) {
+    public int countOccurrences(MyList<Student> students, Student target) {
         if (students == null) {
             throw new IllegalArgumentException("Students list cannot be null");
         }
@@ -39,7 +39,7 @@ public class StudentOccurrenceCounter {
                     break;
                 }
 
-                List<Student> part = students.subList(start, end);
+                MyList<Student> part = students.subList(start, end);
                 executorService.submit(() -> countPartOccurrences(part, target, counter));
             }
         } finally {
@@ -54,7 +54,7 @@ public class StudentOccurrenceCounter {
         return Math.min(studentsCount, Runtime.getRuntime().availableProcessors());
     }
 
-    private void countPartOccurrences(List<Student> studentsPart, Student target, AtomicInteger counter) {
+    private void countPartOccurrences(MyList<Student> studentsPart, Student target, AtomicInteger counter) {
         for (Student student : studentsPart) {
             if (student.equals(target)) {
                 counter.incrementAndGet();

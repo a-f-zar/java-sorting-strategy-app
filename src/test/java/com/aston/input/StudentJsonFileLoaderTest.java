@@ -2,13 +2,13 @@ package com.aston.input;
 
 import com.aston.exception.StudentFileLoadException;
 import com.aston.models.Student;
+import com.aston.models.custom.MyList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -32,7 +32,7 @@ class StudentJsonFileLoaderTest {
                 ]""";
         Files.writeString(file, json);
 
-        List<Student> students = loader.load(file);
+        MyList<Student> students = loader.load(file);
 
         assertEquals(2, students.size());
     }
@@ -49,7 +49,7 @@ class StudentJsonFileLoaderTest {
                 ]""";
         Files.writeString(file, json);
 
-        List<Student> students = loader.load(file);
+        MyList<Student> students = loader.load(file);
 
         assertEquals(1, students.size());
     }
@@ -60,7 +60,7 @@ class StudentJsonFileLoaderTest {
         Path file = tempDir.resolve("empty.json");
         Files.writeString(file, "[]");
 
-        List<Student> students = loader.load(file);
+        MyList<Student> students = loader.load(file);
 
         assertTrue(students.isEmpty());
     }

@@ -2,25 +2,25 @@ package com.aston.input.context.strategy;
 
 import com.aston.exception.ValidationException;
 import com.aston.models.Student;
+import com.aston.models.custom.CustomArrayList;
+import com.aston.models.custom.MyList;
 import com.aston.validation.StudentValidator;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class ManualInputStudent implements InputStudentStrategy {
     private static final StudentValidator validator = new StudentValidator();
 
     @Override
-    public List<Student> input(InputStream in, int count) {
+    public MyList<Student> input(InputStream in, int count) {
         Scanner scanner = new Scanner(in);
         return input(scanner, count);
     }
 
     @Override
-    public List<Student> input(Scanner scanner, int count) {
-        List<Student> students = new ArrayList<>();
+    public MyList<Student> input(Scanner scanner, int count) {
+        MyList<Student> students = new CustomArrayList<>();
 
         for (int i = 0; i < count; i++) {
             students.add(

@@ -1,14 +1,15 @@
 package com.aston.sorting.context.strategy;
 
-import java.util.ArrayList;
+import com.aston.models.custom.CustomArrayList;
+import com.aston.models.custom.MyList;
+
 import java.util.Comparator;
-import java.util.List;
 
 public class BubbleSortStrategy<T> implements SortingStrategy<T> {
 
     @Override
-    public List<T> sort(List<T> inputList, Comparator<T> comparator) {
-        List<T> list = new ArrayList<>(inputList);
+    public MyList<T> sort(MyList<T> inputList, Comparator<T> comparator) {
+        MyList<T> list = new CustomArrayList<>(inputList);
 
         int n = list.size();
         T tmp;

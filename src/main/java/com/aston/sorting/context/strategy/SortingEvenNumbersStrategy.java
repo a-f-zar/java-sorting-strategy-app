@@ -1,8 +1,9 @@
 package com.aston.sorting.context.strategy;
 
-import java.util.ArrayList;
+import com.aston.models.custom.CustomArrayList;
+import com.aston.models.custom.MyList;
+
 import java.util.Comparator;
-import java.util.List;
 import java.util.function.Function;
 
 public class SortingEvenNumbersStrategy<T> implements SortingStrategy<T> {
@@ -15,10 +16,10 @@ public class SortingEvenNumbersStrategy<T> implements SortingStrategy<T> {
     }
 
     @Override
-    public List<T> sort(List<T> inputList, Comparator<T> comparator) {
-        List<T> list = new ArrayList<>(inputList);
+    public MyList<T> sort(MyList<T> inputList, Comparator<T> comparator) {
+        MyList<T> list = new CustomArrayList<>(inputList);
 
-        List<T> posEven = list.stream()
+        MyList<T> posEven = (MyList<T>) list.stream()
                 .filter(i -> numberExtractor.apply(i) % 2 == 0)
                 .toList();
 
