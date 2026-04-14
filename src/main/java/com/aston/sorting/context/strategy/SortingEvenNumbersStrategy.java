@@ -19,9 +19,9 @@ public class SortingEvenNumbersStrategy<T> implements SortingStrategy<T> {
     public MyList<T> sort(MyList<T> inputList, Comparator<T> comparator) {
         MyList<T> list = new CustomArrayList<>(inputList);
 
-        MyList<T> posEven = (MyList<T>) list.stream()
+        MyList<T> posEven = list.stream()
                 .filter(i -> numberExtractor.apply(i) % 2 == 0)
-                .toList();
+                .collect(CustomArrayList::new, MyList::add, MyList::addAll);
 
         posEven = sorter.sort(posEven, comparator);
 

@@ -8,8 +8,6 @@ import com.aston.sorting.context.strategy.SortingEvenNumbersStrategy;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-
 import com.aston.models.comparator.StudentComparator.By;
 import static com.aston.models.comparator.StudentComparator.compare;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +23,7 @@ public class EvenNumbersSortTest {
         sorter.setStrategy(new SortingEvenNumbersStrategy<Integer>(new BubbleSortStrategy<>(), i -> i));
         MyList<Integer> input = CustomArrayList.of(5, 4, 7, 2, 3);
         MyList<Integer> result = sorter.sort(input, Integer::compareTo);
-        assertEquals(Arrays.asList(5, 2, 7, 4, 3), result);
+        assertEquals(CustomArrayList.of(5, 2, 7, 4, 3), result);
     }
 
     @Test
@@ -34,7 +32,7 @@ public class EvenNumbersSortTest {
         sorter.setStrategy(new SortingEvenNumbersStrategy<Integer>(new BubbleSortStrategy<>(), i -> i));
         MyList<Integer> input = CustomArrayList.of(5, 4, 7, 2, 3);
         MyList<Integer> result = sorter.sort(input, Integer::compareTo);
-        assertNotEquals(Arrays.asList(5, 4, 7, 2, 3), result);
+        assertNotEquals(CustomArrayList.of(5, 4, 7, 2, 3), result);
     }
 
     @Test

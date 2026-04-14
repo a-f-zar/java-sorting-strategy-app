@@ -3,6 +3,7 @@ package com.aston.input;
 import com.aston.exception.StudentFileLoadException;
 import com.aston.exception.ValidationException;
 import com.aston.models.Student;
+import com.aston.models.custom.CustomArrayList;
 import com.aston.models.custom.MyList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,11 +55,13 @@ public class StudentJsonFileLoader {
             throw new StudentFileLoadException("JSON root must be an array of student objects");
         }
 
-        return (MyList<Student>) StreamSupport.stream(rootNode.spliterator(), false)
-                .filter(JsonNode::isObject)
-                .map(this::parseStudent)
-                .flatMap(Optional::stream)
-                .toList();
+        return new CustomArrayList<Student>(
+                StreamSupport.stream(rootNode.spliterator(), false)
+                        .filter(JsonNode::isObject)
+                        .map(this::parseStudent)
+                        .flatMap(Optional::stream)
+                        .collect(() -> new CustomArrayList<Student>(), MyList::add, MyList::addAll)
+        );
     }
 
     private Optional<Student> parseStudent(JsonNode recordNode) {

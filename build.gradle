@@ -13,6 +13,12 @@ application {
     mainClass = 'com.aston.Main'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
 group = 'com.aston'
 version = '1.0-SNAPSHOT'
 
