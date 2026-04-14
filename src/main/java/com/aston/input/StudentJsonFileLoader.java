@@ -3,8 +3,6 @@ package com.aston.input;
 import com.aston.exception.StudentFileLoadException;
 import com.aston.exception.ValidationException;
 import com.aston.models.Student;
-import com.aston.models.custom.CustomArrayList;
-import com.aston.models.custom.MyList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
