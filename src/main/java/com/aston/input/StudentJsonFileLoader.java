@@ -6,6 +6,7 @@ import com.aston.models.Student;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -29,7 +30,7 @@ public class StudentJsonFileLoader {
     }
 
     public List<Student> load(Path path) {
-        try (var reader = Files.newBufferedReader(path)) {
+        try (BufferedReader reader = Files.newBufferedReader(path)) {
             return loadRootNode(objectMapper.readTree(reader));
         } catch (IOException e) {
             throw new StudentFileLoadException("Failed to read JSON file: " + path.toAbsolutePath(), e);
