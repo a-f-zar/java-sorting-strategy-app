@@ -3,6 +3,8 @@ package com.aston.input;
 import com.aston.exception.StudentFileLoadException;
 import com.aston.exception.ValidationException;
 import com.aston.models.Student;
+import com.aston.models.custom.CustomArrayList;
+import com.aston.models.custom.MyList;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -11,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -29,7 +30,7 @@ public class StudentJsonFileLoader {
         this.objectMapper = objectMapper;
     }
 
-    public List<Student> load(Path path) {
+    public MyList<Student> load(Path path) {
         try (BufferedReader reader = Files.newBufferedReader(path)) {
             return loadRootNode(objectMapper.readTree(reader));
         } catch (IOException e) {
@@ -37,7 +38,7 @@ public class StudentJsonFileLoader {
         }
     }
 
-    public List<Student> load(InputStream inputStream) {
+    public MyList<Student> load(InputStream inputStream) {
         if (inputStream == null) {
             throw new StudentFileLoadException("Input stream cannot be null");
         }
@@ -49,16 +50,18 @@ public class StudentJsonFileLoader {
         }
     }
 
-    private List<Student> loadRootNode(JsonNode rootNode) {
+    private MyList<Student> loadRootNode(JsonNode rootNode) {
         if (rootNode == null || !rootNode.isArray()) {
             throw new StudentFileLoadException("JSON root must be an array of student objects");
         }
 
-        return StreamSupport.stream(rootNode.spliterator(), false)
-                .filter(JsonNode::isObject)
-                .map(this::parseStudent)
-                .flatMap(Optional::stream)
-                .toList();
+        return new CustomArrayList<Student>(
+                StreamSupport.stream(rootNode.spliterator(), false)
+                        .filter(JsonNode::isObject)
+                        .map(this::parseStudent)
+                        .flatMap(Optional::stream)
+                        .collect(() -> new CustomArrayList<Student>(), MyList::add, MyList::addAll)
+        );
     }
 
     private Optional<Student> parseStudent(JsonNode recordNode) {

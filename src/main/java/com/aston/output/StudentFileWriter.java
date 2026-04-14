@@ -2,6 +2,7 @@ package com.aston.output;
 
 import com.aston.exception.StudentFileWriteException;
 import com.aston.models.Student;
+import com.aston.models.custom.MyList;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -10,14 +11,13 @@ import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class StudentFileWriter {
 
     private static final DateTimeFormatter FORMATTER =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public void writeSortedStudents(List<Student> students, Path path) {
+    public void writeSortedStudents(MyList<Student> students, Path path) {
         validateArguments(students, path);
 
         try (BufferedWriter writer = openWriter(path)) {
@@ -67,7 +67,7 @@ public class StudentFileWriter {
         );
     }
 
-    private void validateArguments(List<Student> students, Path path) {
+    private void validateArguments(MyList<Student> students, Path path) {
         if (students == null) {
             throw new IllegalArgumentException("Students list cannot be null");
         }

@@ -2,9 +2,9 @@ package com.aston.input.context;
 
 import com.aston.input.context.strategy.InputStudentStrategy;
 import com.aston.models.Student;
+import com.aston.models.custom.MyList;
 
 import java.io.InputStream;
-import java.util.List;
 import java.util.Scanner;
 
 public class InputStudent {
@@ -15,7 +15,7 @@ public class InputStudent {
         this.strategy = strategy;
     }
 
-    public List<Student> input(InputStream in, int count) {
+    public MyList<Student> input(InputStream in, int count) {
         if (strategy == null) {
             throw new IllegalStateException("Input strategy not set");
         }
@@ -23,7 +23,7 @@ public class InputStudent {
         return strategy.input(in, count);
     }
 
-    public List<Student> input(Scanner scanner, int count) {
+    public MyList<Student> input(Scanner scanner, int count) {
         if (strategy == null) {
             throw new IllegalStateException("Input strategy not set");
         }
@@ -31,7 +31,7 @@ public class InputStudent {
         return strategy.input(scanner, count);
     }
 
-    public List<Student> input(int count) {
+    public MyList<Student> input(int count) {
         if (strategy == null) {
             throw new IllegalStateException("Input strategy not set");
         }

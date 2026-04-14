@@ -4,12 +4,12 @@ import com.aston.input.context.strategy.FileInputStudent;
 import com.aston.input.context.strategy.ManualInputStudent;
 import com.aston.input.context.strategy.RandomInputStudent;
 import com.aston.models.Student;
+import com.aston.models.custom.MyList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,7 +30,7 @@ class InputStudentTest {
                 "12345"
         ) + System.lineSeparator();
 
-        List<Student> students = inputStudent.input(
+        MyList<Student> students = inputStudent.input(
                 new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)),
                 1
         );
@@ -44,7 +44,7 @@ class InputStudentTest {
     void shouldUseRandomInputStrategy() {
         inputStudent.setStrategy(new RandomInputStudent());
 
-        List<Student> students = inputStudent.input(3);
+        MyList<Student> students = inputStudent.input(3);
 
         assertEquals(3, students.size());
         assertFalse(students.contains(null));
@@ -61,7 +61,7 @@ class InputStudentTest {
                 ]
                 """;
 
-        List<Student> students = inputStudent.input(
+        MyList<Student> students = inputStudent.input(
                 new ByteArrayInputStream(json.getBytes(StandardCharsets.UTF_8)),
                 0
         );

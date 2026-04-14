@@ -1,11 +1,11 @@
 package com.aston.concurrent;
 
 import com.aston.models.Student;
+import com.aston.models.custom.MyList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.aston.models.custom.CustomArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,7 +19,7 @@ class StudentOccurrenceCounterTest {
     void countOccurrencesShouldReturnZeroForEmptyList() {
         Student target = buildStudent("Alexandr", 4.5, 12345);
 
-        int result = counter.countOccurrences(List.of(), target);
+        int result = counter.countOccurrences(CustomArrayList.of(), target);
 
         assertEquals(0, result);
     }
@@ -27,7 +27,7 @@ class StudentOccurrenceCounterTest {
     @Test
     @DisplayName("Счетчик возвращает ноль, если искомый студент отсутствует")
     void countOccurrencesShouldReturnZeroWhenStudentIsAbsent() {
-        List<Student> students = List.of(
+        MyList<Student> students = CustomArrayList.of(
                 buildStudent("Alexandr", 4.5, 12345),
                 buildStudent("Maria", 5.0, 67890)
         );
@@ -42,7 +42,7 @@ class StudentOccurrenceCounterTest {
     @DisplayName("Счетчик возвращает один, если студент встречается один раз")
     void countOccurrencesShouldReturnOneWhenStudentOccursOnce() {
         Student target = buildStudent("Alexandr", 4.5, 12345);
-        List<Student> students = List.of(
+        MyList<Student> students = CustomArrayList.of(
                 target,
                 buildStudent("Maria", 5.0, 67890),
                 buildStudent("Ivan", 4.2, 11111)
@@ -57,7 +57,7 @@ class StudentOccurrenceCounterTest {
     @DisplayName("Счетчик возвращает корректное количество, если студент встречается несколько раз")
     void countOccurrencesShouldReturnCorrectCountForMultipleOccurrences() {
         Student target = buildStudent("Alexandr", 4.5, 12345);
-        List<Student> students = List.of(
+        MyList<Student> students = CustomArrayList.of(
                 buildStudent("Maria", 5.0, 67890),
                 target,
                 buildStudent("Ivan", 4.2, 11111),
@@ -75,7 +75,7 @@ class StudentOccurrenceCounterTest {
     void countOccurrencesShouldThrowExceptionWhenTargetStudentIsNull() {
         assertThrows(
                 IllegalArgumentException.class,
-                () -> counter.countOccurrences(List.of(), null)
+                () -> counter.countOccurrences(CustomArrayList.of(), null)
         );
     }
 
@@ -94,7 +94,7 @@ class StudentOccurrenceCounterTest {
     @DisplayName("Счетчик корректно считает вхождения студента в большом списке")
     void countOccurrencesShouldReturnCorrectCountForLargeList() {
         Student target = buildStudent("Alexandr", 4.5, 12345);
-        List<Student> students = new ArrayList<>();
+        MyList<Student> students = new CustomArrayList<>();
 
         for (int i = 0; i < 10000; i++) {
             if (i % 20 == 0) {

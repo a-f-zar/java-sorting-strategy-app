@@ -1,15 +1,16 @@
 package com.aston.generation;
 
 import com.aston.models.Student;
+import com.aston.models.custom.CustomArrayList;
+import com.aston.models.custom.MyList;
 import com.aston.validation.StudentValidator;
 
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.IntStream;
 
 public class RandomStudentGenerator {
 
-    private static final List<String> FIRST_NAMES = List.of(
+    private static final MyList<String> FIRST_NAMES = CustomArrayList.of(
             "Alexandr", "Sergey", "Kirill", "Roman", "Anna",
             "Elena", "Dmitry", "Ivan", "Maria", "Olga"
     );
@@ -36,14 +37,16 @@ public class RandomStudentGenerator {
                 .build();
     }
 
-    public List<Student> generateStudents(int count) {
+    public MyList<Student> generateStudents(int count) {
         if (count < 0) {
             throw new IllegalArgumentException("Count cannot be negative");
         }
 
-        return IntStream.range(0, count)
-                .mapToObj(i -> generateStudent())
-                .toList();
+        return  CustomArrayList.of(
+                IntStream.range(0, count)
+                        .mapToObj(i -> generateStudent())
+                        .toArray(Student[]::new)
+        );
     }
 
     private String randomName() {

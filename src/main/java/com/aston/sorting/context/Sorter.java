@@ -1,9 +1,9 @@
 package com.aston.sorting.context;
 
+import com.aston.models.custom.MyList;
 import com.aston.sorting.context.strategy.SortingStrategy;
 
 import java.util.Comparator;
-import java.util.List;
 
 public class Sorter<T> {
     private SortingStrategy<T> strategy;
@@ -12,7 +12,7 @@ public class Sorter<T> {
         this.strategy = strategy;
     }
 
-    public List<T> sort(List<T> list, Comparator<T> comparator) {
+    public MyList<T> sort(MyList<T> list, Comparator<T> comparator) {
         if (strategy == null) {
             throw new IllegalStateException("Strategy not set");
         }

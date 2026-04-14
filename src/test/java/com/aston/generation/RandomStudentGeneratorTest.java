@@ -1,12 +1,15 @@
 package com.aston.generation;
 
 import com.aston.models.Student;
+import com.aston.models.custom.MyList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 public class RandomStudentGeneratorTest {
     private final RandomStudentGenerator generator = new RandomStudentGenerator();
@@ -25,7 +28,7 @@ public class RandomStudentGeneratorTest {
     @Test
     @DisplayName("Генератор создает коллекцию студентов заданной длины")
     void generateStudentsShouldCreateCollectionWithRequestedSize() {
-        List<Student> students = generator.generateStudents(10);
+        MyList<Student> students = generator.generateStudents(10);
 
         assertEquals(10, students.size());
         assertTrue(students.stream().allMatch(student -> student != null));
@@ -34,7 +37,7 @@ public class RandomStudentGeneratorTest {
     @Test
     @DisplayName("Генератор создает пустую коллекцию при count = 0")
     void generateStudentsShouldCreateEmptyCollectionWhenCountIsZero() {
-        List<Student> students = generator.generateStudents(0);
+        MyList<Student> students = generator.generateStudents(0);
 
         assertTrue(students.isEmpty());
     }

@@ -2,6 +2,8 @@ package com.aston.output;
 
 import com.aston.exception.StudentFileWriteException;
 import com.aston.models.Student;
+import com.aston.models.custom.CustomArrayList;
+import com.aston.models.custom.MyList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -9,9 +11,10 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StudentFileWriterTest {
 
@@ -24,7 +27,7 @@ class StudentFileWriterTest {
     @DisplayName("Создаёт файл и записывает заголовок и студентов")
     void writeSortedStudents_createsFileWithContent() throws IOException {
         Path file = tempDir.resolve("output.txt");
-        List<Student> students = List.of(
+        MyList<Student> students = CustomArrayList.of(
                 buildStudent("Alice", 4.5, 1001),
                 buildStudent("Bob", 3.8, 1002)
         );
@@ -46,8 +49,8 @@ class StudentFileWriterTest {
     void writeSortedStudents_appendsNewBlock() throws IOException {
         Path file = tempDir.resolve("output.txt");
 
-        writer.writeSortedStudents(List.of(buildStudent("Alice", 4.5, 1001)), file);
-        writer.writeSortedStudents(List.of(buildStudent("Bob", 3.8, 1002)), file);
+        writer.writeSortedStudents(CustomArrayList.of(buildStudent("Alice", 4.5, 1001)), file);
+        writer.writeSortedStudents(CustomArrayList.of(buildStudent("Bob", 3.8, 1002)), file);
 
         String content = Files.readString(file);
         assertTrue(content.contains("Alice"), "Первый блок должен остаться");
@@ -61,7 +64,7 @@ class StudentFileWriterTest {
     void writeSortedStudents_writesEmptyList() throws IOException {
         Path file = tempDir.resolve("output.txt");
 
-        writer.writeSortedStudents(List.of(), file);
+        writer.writeSortedStudents(CustomArrayList.of(), file);
 
         String content = Files.readString(file);
         assertTrue(content.contains("total: 0"));
@@ -78,7 +81,7 @@ class StudentFileWriterTest {
     @DisplayName("Выбрасывает IllegalArgumentException при null пути")
     void writeSortedStudents_throwsWhenPathIsNull() {
         assertThrows(IllegalArgumentException.class,
-                () -> writer.writeSortedStudents(List.of(), null));
+                () -> writer.writeSortedStudents(CustomArrayList.of(), null));
     }
 
     @Test
@@ -86,7 +89,7 @@ class StudentFileWriterTest {
     void writeSortedStudents_throwsStudentFileWriteExceptionOnIOError() {
         // Директория вместо файла — запись невозможна
         assertThrows(StudentFileWriteException.class,
-                () -> writer.writeSortedStudents(List.of(), tempDir));
+                () -> writer.writeSortedStudents(CustomArrayList.of(), tempDir));
     }
 
     @Test
@@ -137,7 +140,7 @@ class StudentFileWriterTest {
     void mixedWrites_bothBlocksPresent() throws IOException {
         Path file = tempDir.resolve("output.txt");
 
-        writer.writeSortedStudents(List.of(buildStudent("Alice", 4.5, 1001)), file);
+        writer.writeSortedStudents(CustomArrayList.of(buildStudent("Alice", 4.5, 1001)), file);
         writer.writeOccurrenceResult(buildStudent("Alice", 4.5, 1001), 1, file);
 
         String content = Files.readString(file);

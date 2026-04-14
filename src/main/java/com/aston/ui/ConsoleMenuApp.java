@@ -8,6 +8,7 @@ import com.aston.input.context.strategy.ManualInputStudent;
 import com.aston.input.context.strategy.RandomInputStudent;
 import com.aston.models.Student;
 import com.aston.models.comparator.StudentComparator;
+import com.aston.models.custom.MyList;
 import com.aston.output.StudentFileWriter;
 import com.aston.sorting.context.Sorter;
 import com.aston.sorting.context.strategy.BubbleSortStrategy;
@@ -21,7 +22,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleMenuApp {
@@ -71,14 +71,14 @@ public class ConsoleMenuApp {
     private void handleManualInput() {
         int count = readStudentCount();
         inputStudent.setStrategy(new ManualInputStudent());
-        List<Student> students = inputStudent.input(scanner, count);
+        MyList<Student> students = inputStudent.input(scanner, count);
         processStudents(students);
     }
 
     private void handleRandomInput() {
         int count = readStudentCount();
         inputStudent.setStrategy(new RandomInputStudent());
-        List<Student> students = inputStudent.input(count);
+        MyList<Student> students = inputStudent.input(count);
         processStudents(students);
     }
 
@@ -89,7 +89,7 @@ public class ConsoleMenuApp {
 
             try {
                 inputStudent.setStrategy(new FileInputStudent());
-                List<Student> students = loadStudentsFromFile(pathText);
+                MyList<Student> students = loadStudentsFromFile(pathText);
                 processStudents(students);
                 return;
             } catch (InvalidPathException e) {
@@ -104,7 +104,7 @@ public class ConsoleMenuApp {
         }
     }
 
-    private void processStudents(List<Student> students) {
+    private void processStudents(MyList<Student> students) {
         if (students.isEmpty()) {
             System.out.println("Student list is empty.");
             return;
@@ -116,7 +116,7 @@ public class ConsoleMenuApp {
 
         SortType sortType = readSortType();
         StudentComparator.By sortField = readSortField();
-        List<Student> sortedStudents = sortStudents(students, sortType, sortField);
+        MyList<Student> sortedStudents = sortStudents(students, sortType, sortField);
 
         System.out.println();
         System.out.println("Sorted collection:");
@@ -126,7 +126,7 @@ public class ConsoleMenuApp {
         System.out.println();
     }
 
-    private List<Student> sortStudents(List<Student> students, SortType sortType, StudentComparator.By sortField) {
+    private MyList<Student> sortStudents(MyList<Student> students, SortType sortType, StudentComparator.By sortField) {
         Sorter<Student> sorter = new Sorter<>();
         sorter.setStrategy(buildSortingStrategy(sortType, sortField));
         return sorter.sort(students, StudentComparator.compare(sortField));
@@ -245,7 +245,7 @@ public class ConsoleMenuApp {
         System.out.println("0. Exit");
     }
 
-    private OccurrenceResult handleOccurrencesCount(List<Student> students) {
+    private OccurrenceResult handleOccurrencesCount(MyList<Student> students) {
         System.out.println();
         System.out.println("Do you want to count occurrences of a student?");
         System.out.println("1. Yes");
@@ -279,7 +279,7 @@ public class ConsoleMenuApp {
         }
     }
 
-    private void handleSaveResult(List<Student> sortedStudents, OccurrenceResult occurrenceResult) {
+    private void handleSaveResult(MyList<Student> sortedStudents, OccurrenceResult occurrenceResult) {
         System.out.println();
         System.out.println("Do you want to save the result to file?");
         System.out.println("1. Yes");
@@ -290,7 +290,7 @@ public class ConsoleMenuApp {
         }
     }
 
-    private void saveResultToFile(List<Student> sortedStudents, OccurrenceResult occurrenceResult) {
+    private void saveResultToFile(MyList<Student> sortedStudents, OccurrenceResult occurrenceResult) {
         while (true) {
             System.out.print("Enter output file path or press Enter for " + DEFAULT_OUTPUT_FILE + ": ");
             String pathText = scanner.nextLine().trim();
@@ -318,13 +318,13 @@ public class ConsoleMenuApp {
         }
     }
 
-    private List<Student> loadStudentsFromFile(String pathText) throws IOException {
+    private MyList<Student> loadStudentsFromFile(String pathText) throws IOException {
         try (InputStream inputStream = Files.newInputStream(Path.of(pathText))) {
             return inputStudent.input(inputStream, 0);
         }
     }
 
-    private void printStudents(List<Student> students) {
+    private void printStudents(MyList<Student> students) {
         for (int i = 0; i < students.size(); i++) {
             System.out.println((i + 1) + ". " + students.get(i));
         }
